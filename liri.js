@@ -2,7 +2,7 @@
 var keys = require('./keys.js');
 var request = require('request');
 var twitter = require('twitter');
-// var spotify = require('spotify');
+var spotify = require('spotify');
 var fs = require('fs');
 var parameters = process.argv.slice(3);
 
@@ -12,12 +12,15 @@ var action = process.argv[2];
     case 'my-tweets' :
       myTweets();
       break;
-//     case 'spotify-this-song' :
-//       myMusic();
-//       break;
+    case 'spotify-this-song' :
+      myMusic();
+      break;
     case 'movie-this' :
       myMovie();
       break;
+    case 'do-what-it-says' :
+      doWhat();
+      break;  
   };
 
 
@@ -47,13 +50,13 @@ function myTweets(){
 
 
 // ombd request
-
 function myMovie(){
-	// if no input auto display to mr nobody
+	// pieces together movie title argvs 
 	if (process.argv[3] != '' && process.argv[3] != null){
 		movieTitle = process.argv[3].trim();
 	}
 	else {
+		//if no input auto display to mr nobody
 		movieTitle = 'Mr.+Nobody';
 	}
 	
@@ -79,8 +82,41 @@ function myMovie(){
 }
 
 
+// spotify request
+function myMusic() {
+	var querySong;
+	if (process.argv[3] != '' && process.argv[3] != null) {
+		 var querySong = process.argv[3];
+	} 
+	// if no input direct to song The Sign
+	else {
+		var querySong = 'the sign';
+	}
+	// searching in spotify 
+	spotify.search({ type: 'track', query: querySong }, function(err, data) {
+    	if (err) {
+    		console.log('Error: ' + err);
+    		return;
+    	}
+    	var mySong = data.tracks.items;
+    	// loop through results
+    	for (var i=0; i < mySong.length; i++){
+    		console.log(i+1);
+    		console.log('artist(s): ' + mySong[i].artists[0].name);
+    		console.log('song name: ' + mySong[i].name);
+    		console.log('album: ' + mySong[i].album.name);
+    		console.log('preview song: ' + mySong[i].preview_url);
+    		
+    	}
+    	 
+	});
+}
 
+function doWhat (){
+	fs.readFile("random.txt", "utf8", function(error, commandData){
+		
+	})
 
-
+}
 
 
