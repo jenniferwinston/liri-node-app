@@ -113,8 +113,8 @@ function myMusic() {
 }
 
 function doWhat (){
-	fs.readFile("random.txt", "utf8", function(error, commandData){
-		
+	fs.readFile("random.txt", "utf8", function(error, data){
+		console.log(data);
 	})
 
 }
